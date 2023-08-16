@@ -6,18 +6,218 @@
             "defaultValue": "penny_stocks-001",
             "type": "String"
         },
-        "networkSecurityGroups_nsg_penny_stocks_westeu_externalid": {
-            "defaultValue": "/subscriptions/ec1567d8-5da9-4237-a0e4-1cd8721c2996/resourceGroups/rg-penny_stocks-westeu/providers/Microsoft.Network/networkSecurityGroups/nsg-penny_stocks-westeu",
+        "networkSecurityGroups_nsg_penny_stocks_westeu_name": {
+            "defaultValue": "nsg-penny_stocks-westeu",
+            "type": "String"
+        },
+        "networkSecurityGroups_nsg_penny_stocks2_westeu_name": {
+            "defaultValue": "nsg-penny_stocks2-westeu",
             "type": "String"
         }
     },
     "variables": {},
     "resources": [
         {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2023-04-01",
+            "name": "[parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name')]",
+            "location": "westeurope",
+            "tags": {
+                "enviroment": "Dev",
+                "production": "Prod"
+            },
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "AllowAnyCustom8080Inbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'), 'AllowAnyCustom8080Inbound')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8080",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAnyCustom5000Inbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'), 'AllowAnyCustom5000Inbound')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "5000",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 110,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAnyCustom80Inbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'), 'AllowAnyCustom80Inbound')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 120,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2023-04-01",
+            "name": "[parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name')]",
+            "location": "westeurope",
+            "tags": {
+                "enviroment": "Dev",
+                "production": "Prod"
+            },
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "AllowMyIpAddressSSHInbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name'), 'AllowMyIpAddressSSHInbound')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "62.90.189.164",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2023-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'), '/AllowAnyCustom5000Inbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'))]"
+            ],
+            "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "5000",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 110,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2023-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'), '/AllowAnyCustom8080Inbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'))]"
+            ],
+            "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "8080",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2023-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'), '/AllowAnyCustom80Inbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'))]"
+            ],
+            "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 120,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2023-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name'), '/AllowMyIpAddressSSHInbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name'))]"
+            ],
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "22",
+                "sourceAddressPrefix": "62.90.189.164",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2023-04-01",
             "name": "[parameters('virtualNetworks_penny_stocks_001_name')]",
             "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name'))]"
+            ],
             "tags": {
                 "enviroment": "Dev",
                 "production": "Prod"
@@ -30,10 +230,14 @@
                 },
                 "subnets": [
                     {
-                        "name": "first_sub",
-                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_penny_stocks_001_name'), 'first_sub')]",
+                        "name": "default",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_penny_stocks_001_name'), 'default')]",
                         "properties": {
-                            "addressPrefix": "10.0.1.0/24",
+                            "addressPrefix": "10.0.0.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'))]"
+                            },
+                            "serviceEndpoints": [],
                             "delegations": [],
                             "privateEndpointNetworkPolicies": "Disabled",
                             "privateLinkServiceNetworkPolicies": "Enabled"
@@ -41,12 +245,12 @@
                         "type": "Microsoft.Network/virtualNetworks/subnets"
                     },
                     {
-                        "name": "default",
-                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_penny_stocks_001_name'), 'default')]",
+                        "name": "first_sub",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_penny_stocks_001_name'), 'first_sub')]",
                         "properties": {
-                            "addressPrefix": "10.0.0.0/24",
+                            "addressPrefix": "10.0.1.0/24",
                             "networkSecurityGroup": {
-                                "id": "[parameters('networkSecurityGroups_nsg_penny_stocks_westeu_externalid')]"
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name'))]"
                             },
                             "serviceEndpoints": [],
                             "delegations": [],
@@ -65,12 +269,13 @@
             "apiVersion": "2023-04-01",
             "name": "[concat(parameters('virtualNetworks_penny_stocks_001_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_penny_stocks_001_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_penny_stocks_001_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'))]"
             ],
             "properties": {
                 "addressPrefix": "10.0.0.0/24",
                 "networkSecurityGroup": {
-                    "id": "[parameters('networkSecurityGroups_nsg_penny_stocks_westeu_externalid')]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks2_westeu_name'))]"
                 },
                 "serviceEndpoints": [],
                 "delegations": [],
@@ -83,10 +288,15 @@
             "apiVersion": "2023-04-01",
             "name": "[concat(parameters('virtualNetworks_penny_stocks_001_name'), '/first_sub')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_penny_stocks_001_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_penny_stocks_001_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name'))]"
             ],
             "properties": {
                 "addressPrefix": "10.0.1.0/24",
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_penny_stocks_westeu_name'))]"
+                },
+                "serviceEndpoints": [],
                 "delegations": [],
                 "privateEndpointNetworkPolicies": "Disabled",
                 "privateLinkServiceNetworkPolicies": "Enabled"
